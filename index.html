@@ -10,7 +10,7 @@
     <!-- JQ LINK -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
 
     <!-- BOOTSTRAP -->
     <!-- Latest compiled and minified CSS -->
@@ -28,6 +28,8 @@
     <!-- LOCAL LINKS -->
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/javascript/logic.js"></script>
+
 
 </head>
 
@@ -53,7 +55,7 @@
                     <div class="panel-heading">Panel heading</div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table" id="trains">
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -91,17 +93,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="dest">Destinaton</label>
-                                    <input type="Name" class="form-control" id="name" placeholder="Name">
+                                    <input type="Place" class="form-control" id="dest" placeholder="Destination">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="Name" class="form-control" id="name" placeholder="Name">
+                                    <label for="time">First tain time</label>
+                                    <input type="time" class="form-control" id="time" placeholder="23:00">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="Name" class="form-control" id="name" placeholder="Name">
+                                    <label>Frequency HH:MM</label>
+                                    <select class="form-control">
+                                        <option>00:30</option>
+                                        <option>00:45</option>
+                                        <option>01:00</option>
+                                        <option>01:30</option>
+                                        <option>01:45</option>
+                                    </select>
                                 </div>
-                                <button type="submit" class="btn btn-default">Submit</button>
+                                <button type="submit" class="btn btn-default" id="addTrain">Submit</button>
                             </form>
                         </div>
                     </div>
