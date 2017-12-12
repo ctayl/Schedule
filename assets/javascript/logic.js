@@ -1,12 +1,12 @@
+///////// HIGH LEVEL LOGIC /////////
 
-
-// On page load
+// On page load, initialize firebase and set up click events
 $(document).ready(function () {
 
     // Initialize Firebase
     main.initFirebase();
 
-    // When add train is clicked
+    // When add train is clicked, add a train
     $("#addTrain").on("click", function (event) {
 
         // Prevent refresh
@@ -14,10 +14,9 @@ $(document).ready(function () {
 
         // Add a train
         main.addTrain();
-
     });
 
-    // When a train is added
+    // When a train is added, populate the train table
     main.database.ref().on("child_added", function (childSnapshot) {
 
         // Populate the Train table
@@ -29,6 +28,10 @@ $(document).ready(function () {
     });
 });
 
+////////////////////////////////////
+
+//////////// CORE LOGIC ////////////
+
 // Object containing logic and references
 var main = {
 
@@ -36,7 +39,7 @@ var main = {
     database: "",
 
     // Initialize Firebase
-    initFirebase: function () {
+    initFirebase: () => {
         var config = {
             apiKey: "AIzaSyDCqBPtJJ-IThsynGIck9-CTBIMCNgSyyw",
             authDomain: "test-4998f.firebaseapp.com",
@@ -52,23 +55,23 @@ var main = {
     },
 
     // Adds a train to the database
-    addTrain: function () {
+    addTrain: () => {
 
-        // Grabs inputs from text fields
-
-
+        // If any field is left empty, alert the user and terminate execution
         if ($("#name").val()) {
             var name = $("#name").val();
         } else {
             alert("all fields required");
             return
         };
+
         if ($("#freq").val()) {
             var freq = $("#freq").val();
         } else {
             alert("all fields required");
             return
         };
+
         if ($("#dest").val()) {
             var dest = $("#dest").val();
         } else {
@@ -78,7 +81,6 @@ var main = {
 
         if ($("#time").val()) {
             var time = $("#time").val();
-
         } else {
             alert("all fields required");
             return
@@ -96,48 +98,43 @@ var main = {
     // Fills the train table with all trains in the database
     populate: (childSnapshot) => {
 
-        // Log everything that's coming out of snapshot
-        // console.log(childSnapshot.val().Name);
-        // console.log(childSnapshot.val().Dest);
-        // console.log(childSnapshot.val().Time);
-        // console.log(childSnapshot.val().Freq);
-
+        // Create local temp vars
         let tFrequency = childSnapshot.val().Freq;
-        
         let firstTime = childSnapshot.val().Time;
-        // var time = moment(temp).format("HH:mm");
-        console.log(firstTime);
+
+        // Converts the firstTime and subtracts a year
         let convert = moment(firstTime, "HH:mm").subtract(1, "years");
-        console.log(convert._i);
-        let firstTimeConverted = moment(convert._i, "HHmm").format("HH:mm");
-        // console.log(moment(firstTimeConverted._i).format("HH:mm"));
-        console.log(firstTimeConverted);
+
+        // Gets current time
         let currentTime = moment();
-        console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
-        // Difference between the times
+        // Gets the difference between current and first time
         let diffTime = moment().diff(moment(convert), "minutes");
-        console.log("DIFFERENCE IN TIME: " + diffTime);
+        console.log(diffTime);
 
-        // Time apart (remainder)
+        // Calculates the time difference
         let tRemainder = diffTime % tFrequency;
-        console.log("time left " + tRemainder);
 
-        // Minute Until Train
+        // Calculates the minutes until the next train
         let tMinutesTillTrain = tFrequency - tRemainder;
-        console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
-        // Next Train
+
+        // Calculates the time of arrival
         let nextTrain = moment(moment().add(tMinutesTillTrain, "minutes")).format("hh:mm");
 
         // Creates a table row containing the train parameters
         $("#trains").append(
+
+            // Native Vals
             "<tr><td> " + childSnapshot.val().Name +
             " </td><td> " + childSnapshot.val().Dest +
-            // " </td><td> " + childSnapshot.val().Time +
-            // " </td><td> " + childSnapshot.val().Freq +
+            " </td><td> " + childSnapshot.val().Freq +
+
+            // Calculated Vals
             " </td><td> " + nextTrain +
             " </td><td> " + tMinutesTillTrain + "</td></tr>"
         );
     }
 }
+
+////////////////////////////////////
