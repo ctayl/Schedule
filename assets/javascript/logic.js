@@ -57,7 +57,7 @@ var main = {
     // Adds a train to the database
     addTrain: () => {
 
-        // If any field is left empty, alert the user and terminate execution
+        // Stores field values into local variables. If any field is left empty, alert the user and terminate execution
         if ($("#name").val()) {
             var name = $("#name").val();
         } else {
@@ -118,9 +118,8 @@ var main = {
         // Calculates the minutes until the next train
         let tMinutesTillTrain = tFrequency - tRemainder;
 
-
         // Calculates the time of arrival
-        let nextTrain = moment(moment().add(tMinutesTillTrain, "minutes")).format("hh:mm");
+        let nextTrain = moment(moment().add(tMinutesTillTrain, "minutes")).format("HH:mm");
 
         // Creates a table row containing the train parameters
         $("#trains").append(
